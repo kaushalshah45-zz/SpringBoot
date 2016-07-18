@@ -1,6 +1,7 @@
 package application.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -22,8 +23,9 @@ public class HelloController {
     @Autowired
     LocaleResolver localeResolver;
 
-    @RequestMapping(value = "/home.html")
-    public ModelAndView index(HttpServletRequest request) throws Exception {
+    @RequestMapping(value ={"/", "/home"})
+    public ModelAndView index(HttpServletRequest request) throws Exception
+    {
 
         if(request.getParameter("lang") == null)
         {
@@ -31,15 +33,22 @@ public class HelloController {
         }
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute("value", 5);
-        return new ModelAndView("home/home", modelMap);
+        return new ModelAndView("home", modelMap);
     }
 
-    @RequestMapping(value = "/{lang}/home.html")
-    public ModelAndView index2(HttpServletRequest request, HttpServletResponse response, @PathVariable("lang") String lang) throws Exception {
+    @RequestMapping(value = "/{lang}/home")
+    public ModelAndView index2(HttpServletRequest request, HttpServletResponse response, @PathVariable("lang") String lang) throws Exception
+    {
 
         localeResolver.setLocale(request, response, StringUtils.parseLocaleString(lang));
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute("value", 5);
-        return new ModelAndView("home/home", modelMap);
+        return new ModelAndView("home", modelMap);
+    }
+
+    @RequestMapping(value = "/AddUser")
+    public ModelAndView addUser(HttpServletRequest request)
+    {
+        return new ModelAndView("AddUser");
     }
 }
